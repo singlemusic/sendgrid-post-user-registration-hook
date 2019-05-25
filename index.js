@@ -66,7 +66,7 @@ module.exports = function (user, context, cb) {
             json: true
           })
             .then(() => {
-              console.log('Added ' + recipientId + ' to the ' + listName + 'list')
+              console.log('Added ' + recipientId + ' to the ' + listName + ' list')
             })
             .catch(error => {
               console.error(error);
