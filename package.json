@@ -1,0 +1,30 @@
+{
+  "name": "sendgrid-post-user-registration-hook",
+  "version": "0.0.1",
+  "description": "Auth0 Hook to add users to a sendgrid list",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:singlemusic/sendgrid-post-user-registration-hook.git"
+  },
+  "keywords": [
+    "auth0",
+    "sendgrid",
+    "hook",
+    "marketing",
+    "campaign"
+  ],
+  "author": "Single LLC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/singlemusic/sendgrid-post-user-registration-hook/issues"
+  },
+  "homepage": "https://github.com/singlemusic/sendgrid-post-user-registration-hook#readme",
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  }
+}
