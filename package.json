@@ -27,10 +27,9 @@
   "homepage": "https://github.com/singlemusic/sendgrid-post-user-registration-hook#readme",
   "dependencies": {
     "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "request-promise": "^4.2.4",
+    "snyk": "^1.319.0"
   },
-  "devDependencies": {
-    "snyk": "^1.205.0"  
-  },
+  "devDependencies": {},
   "snyk": true
 }
