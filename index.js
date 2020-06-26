@@ -25,6 +25,7 @@ module.exports = function (user, context, cb) {
   const connectionName = context.webtask.secrets['connection-name'];
   const listId = context.webtask.secrets['list-id'];
   if (context.connection.name !== connectionName) {
+    console.log('skipping execution for ', context.connection.name);
     return cb();
   }
   const contactRequest = {
