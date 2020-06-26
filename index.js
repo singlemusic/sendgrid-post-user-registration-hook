@@ -23,70 +23,34 @@ const rp = require('request-promise');
 module.exports = function (user, context, cb) {
   const apiKey = context.webtask.secrets['sendgrid-api-key'];
   const connectionName = context.webtask.secrets['connection-name'];
+  const listId = context.webtask.secrets['list-id'];
   if (context.connection.name !== connectionName) {
     return cb();
   }
-  rp.get({
-    uri: 'https://api.sendgrid.com/v3/contactdb/lists',
+  const contactRequest = {
+    list_ids: [
+      listId
+    ],
+    contacts: [
+      {
+        email: user.email
+      }
+    ],
+  };
+  console.log('request: ', contactRequest);
+  rp({
+    method: 'PUT',
+    uri: 'https://api.sendgrid.com/v3/marketing/contacts',
     auth: {
       'bearer': apiKey
     },
+    body: contactRequest,
     json: true
-  })
-    .then(listResponse => {
-      console.log(listResponse);
-      const listName = context.webtask.secrets['list-name'];
-      const list = listForName(listResponse.lists, listName);
-      if (!list) {
-        return Promise.reject(new Error('No list named ' + listName));
-      }
-      return rp.post({
-        uri: 'https://api.sendgrid.com/v3/contactdb/recipients',
-        auth: {
-          'bearer': apiKey
-        },
-        body: [
-          {
-            email: user.email
-          }
-        ],
-        json: true
-      })
-        .then(response => {
-          if (!response || !response.persisted_recipients || response.persisted_recipients.length === 0) {
-            return Promise.reject(new Error('No persisted recipients'));
-          }
-          const recipientId = response.persisted_recipients[0];
-          console.log('RECIPIENT ID:', recipientId);
-          return rp.post({
-            uri: 'https://api.sendgrid.com/v3/contactdb/lists/' + list.id + '/recipients/' + recipientId,
-            auth: {
-              'bearer': apiKey
-            },
-            json: true
-          })
-            .then(() => {
-              console.log('Added ' + recipientId + ' to the ' + listName + ' list')
-            })
-            .catch(error => {
-              console.error(error);
-              cb(error);
-            });
-        })
-        .catch(error => {
-          console.error(error);
-          cb(error);
-        });
-    })
-    .catch(error => {
-      console.error(error);
-      cb(error);
-    })
-  cb();
-};
-
-function listForName(lists, name) {
-  return lists.find(list => {
-    return list.name === name;
+  }).then(response => {
+    console.log(response);
+    return cb();
+  }).catch(error => {
+    console.error(error);
+    return cb(error);
   });
-}
+};
